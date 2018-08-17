@@ -20,7 +20,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@bitbucket.org:miquido/search-data-structure-php.git"
+            "url": "git@github.com:miquido/data-structure.git"
         }
     ]
 }
