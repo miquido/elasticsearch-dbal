@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Miquido\Elasticsearch\Document\Collection;
 
-use Miquido\DataStructure\HashMap\HashMapCollection;
-use Miquido\DataStructure\HashMap\HashMapCollectionInterface;
-use Miquido\DataStructure\HashMap\HashMapInterface;
+use Miquido\DataStructure\Map\MapCollection;
+use Miquido\DataStructure\Map\MapCollectionInterface;
+use Miquido\DataStructure\Map\MapInterface;
 use Miquido\Elasticsearch\Document\DocumentInterface;
 
 final class DocumentCollection implements DocumentCollectionInterface
@@ -29,10 +29,10 @@ final class DocumentCollection implements DocumentCollectionInterface
         return \count($this->documents);
     }
 
-    public function getData(): HashMapCollectionInterface
+    public function getData(): MapCollectionInterface
     {
-        return new HashMapCollection(...\array_map(
-            function (DocumentInterface $document): HashMapInterface {
+        return new MapCollection(...\array_map(
+            function (DocumentInterface $document): MapInterface {
                 return $document->getData();
             },
             $this->documents

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace Miquido\Elasticsearch\Document\Collection;
 
-
-use Miquido\DataStructure\HashMap\HashMapCollectionInterface;
+use Miquido\DataStructure\Map\MapCollectionInterface;
 use Miquido\Elasticsearch\Document\DocumentInterface;
 
 interface DocumentCollectionInterface extends \Countable
@@ -14,5 +13,5 @@ interface DocumentCollectionInterface extends \Countable
      * @return DocumentInterface[]
      */
     public function getAll(): array;
-    public function getData(): HashMapCollectionInterface;
+    public function getData(): MapCollectionInterface;
 }

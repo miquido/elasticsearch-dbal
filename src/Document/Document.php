@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Miquido\Elasticsearch\Document;
 
-use Miquido\DataStructure\HashMap\HashMapInterface;
+use Miquido\DataStructure\Map\MapInterface;
 
 final class Document implements DocumentInterface
 {
@@ -14,11 +14,11 @@ final class Document implements DocumentInterface
     private $id;
 
     /**
-     * @var HashMapInterface
+     * @var MapInterface
      */
     private $data;
 
-    public function __construct(?string $id, HashMapInterface $data)
+    public function __construct(?string $id, MapInterface $data)
     {
         $this->id = $id;
         $this->data = $data;
@@ -38,7 +38,7 @@ final class Document implements DocumentInterface
         return \is_string($this->id);
     }
 
-    public function getData(): HashMapInterface
+    public function getData(): MapInterface
     {
         return $this->data;
     }

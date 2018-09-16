@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Miquido\Elasticsearch;
 
-use Miquido\DataStructure\HashMap\HashMap;
+use Miquido\DataStructure\Map\Map;
 use Miquido\Elasticsearch\Document\Collection\DocumentCollection;
 use Miquido\Elasticsearch\Document\Collection\DocumentCollectionInterface;
 use Miquido\Elasticsearch\Document\Document;
@@ -156,7 +156,7 @@ class DBAL implements DBALInterface
      */
     public function updateByQuery(Elastica\Query $query, Elastica\Script\Script $script, string $scriptKey = 'source'): void
     {
-        $scriptData = new HashMap($script->toArray()['script']);
+        $scriptData = new Map($script->toArray()['script']);
 
         if ($scriptKey !== 'source') {
             $scriptData = $scriptData->rename('source', $scriptKey);
@@ -238,7 +238,7 @@ class DBAL implements DBALInterface
             function (Elastica\Result $result): DocumentInterface {
                 return new Document(
                     (string) $result->getId(),
-                    new HashMap($result->getData())
+                    new Map($result->getData())
                 );
             },
             $resultSet->getResults()
