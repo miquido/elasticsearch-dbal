@@ -13,5 +13,6 @@ interface DocumentCollectionInterface extends \Countable
      * @return DocumentInterface[]
      */
     public function getAll(): array;
+
     public function getData(): MapCollectionInterface;
 }

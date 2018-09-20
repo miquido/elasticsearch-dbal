@@ -1,0 +1,42 @@
+language: php
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+env:
+  global:
+    - COMPOSER_ARGS=update
+
+matrix:
+  include:
+    - php: '7.1'
+    - php: '7.2'
+      before_script:
+        - >-
+          curl -L
+          https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+          > ./cc-test-reporter
+        - 'chmod +x ./cc-test-reporter'
+        - './cc-test-reporter before-build'
+      after_success:
+        - >-
+          ./cc-test-reporter after-build -t clover --exit-code
+          $TRAVIS_TEST_RESULT
+      env:
+        - COVERAGE=1
+    - php: '7.2'
+      env:
+        - COMPOSER_ARGS=update --prefer-lowest
+
+before_install:
+  - 'export PATH="$PATH:$HOME/.composer/vendor/bin"'
+
+install:
+  - 'composer $COMPOSER_ARGS --prefer-dist --no-progress --no-suggest --no-scripts --ansi'
+
+script:
+  - 'if [[ "$COVERAGE" != "1" ]]; then composer test; fi'
+  - 'if [[ "$COVERAGE" == "1" ]]; then composer analyse; fi'
+  - 'if [[ "$COVERAGE" == "1" ]]; then composer code-coverage; fi'
