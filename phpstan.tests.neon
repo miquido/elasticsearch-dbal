@@ -3,4 +3,4 @@ includes:
     - vendor/phpstan/phpstan-mockery/extension.neon
 parameters:
     ignoreErrors:
-        # Put false positives here
+        - /does not call parent constructor from Miquido\\Elasticsearch\\DBAL/

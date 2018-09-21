@@ -257,7 +257,7 @@ final class DBALTest extends TestCase
         $typeMock = \Mockery::mock(Elastica\Type::class);
         $typeMock->shouldReceive('getIndex')->once()->andReturn($indexMock);
         $typeMock->shouldReceive('addDocuments')->once()->withArgs(function (array $documents, array $options) {
-            /** @var Elastica\Document $document */
+            /* @var Elastica\Document $document */
             $this->assertCount(1, $documents);
             $document = $documents[0];
             $this->assertInstanceOf(Elastica\Document::class, $document);
@@ -318,7 +318,8 @@ final class DBALTest extends TestCase
                 // ooops, parent::__construct is not called
             }
 
-            public function getStuff() {
+            public function getStuff(): void
+            {
                 $this->search(new Elastica\Query(new Elastica\Query\MatchAll()));
             }
         };
