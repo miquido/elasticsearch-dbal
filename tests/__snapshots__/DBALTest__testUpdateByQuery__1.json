@@ -1,0 +1,25 @@
+[
+    "_update_by_query?refresh=wait_for",
+    "POST",
+    {
+        "query": {
+            "terms": {
+                "field_name": [
+                    1,
+                    2,
+                    3
+                ]
+            }
+        },
+        "script": {
+            "params": {
+                "user": {
+                    "name": "John",
+                    "surname": "Smith"
+                }
+            },
+            "lang": "painless",
+            "script": "ctx._source.user = params.user"
+        }
+    }
+]

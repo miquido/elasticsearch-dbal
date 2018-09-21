@@ -266,7 +266,7 @@ class DBAL implements DBALInterface
     protected function getType(): Elastica\Type
     {
         if (!$this->type instanceof Elastica\Type) {
-            throw new \RuntimeException('Type is not set');
+            throw new \RuntimeException(\sprintf('%s is not set', Elastica\Type::class));
         }
 
         return $this->type;
