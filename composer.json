@@ -2,6 +2,7 @@
     "name": "miquido/elasticsearch",
     "type": "library",
     "description": "Observable library",
+    "version": "v1.0.0-rc1",
     "keywords": [
         "PHP",
         "Elasticsearch"
