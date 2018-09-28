@@ -1,5 +1,5 @@
 {
-    "name": "miquido/elasticsearch",
+    "name": "miquido/elasticsearch-dbal",
     "type": "library",
     "description": "Observable library",
     "keywords": [
