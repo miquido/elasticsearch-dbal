@@ -23,7 +23,7 @@
     "require": {
         "php": "^7.2",
         "ext-json": "*",
-        "miquido/data-structure": "dev-master",
+        "miquido/data-structure": "^1.0",
         "ruflin/elastica": "^5.2.1|^6.0"
     },
     "require-dev": {
