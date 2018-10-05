@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Miquido\Elasticsearch;
 
+use Elastica;
 use Miquido\DataStructure\Map\Map;
 use Miquido\Elasticsearch\Document\Collection\DocumentCollection;
 use Miquido\Elasticsearch\Document\Collection\DocumentCollectionInterface;
@@ -13,7 +14,7 @@ use Miquido\Elasticsearch\Exception\DocumentNotFoundException;
 use Miquido\Elasticsearch\Exception\ElasticsearchQueryException;
 use Miquido\Elasticsearch\Result\SearchResult;
 use Miquido\Elasticsearch\Result\SearchResultInterface;
-use Elastica;
+use Webmozart\Assert\Assert;
 
 class DBAL implements DBALInterface
 {
@@ -29,8 +30,10 @@ class DBAL implements DBALInterface
 
     /**
      * @param Elastica\Query $query
-     * @return int
+     *
      * @throws ElasticsearchQueryException
+     *
+     * @return int
      */
     public function count(Elastica\Query $query): int
     {
@@ -38,8 +41,9 @@ class DBAL implements DBALInterface
     }
 
     /**
-     * @return int
      * @throws ElasticsearchQueryException
+     *
+     * @return int
      */
     public function countAll(): int
     {
@@ -51,8 +55,10 @@ class DBAL implements DBALInterface
 
     /**
      * @param Elastica\Query $query
-     * @return SearchResultInterface
+     *
      * @throws ElasticsearchQueryException
+     *
+     * @return SearchResultInterface
      */
     public function search(Elastica\Query $query): SearchResultInterface
     {
@@ -69,7 +75,8 @@ class DBAL implements DBALInterface
         $batch = 10000;
         $totalTime = 0;
 
-        $query->setSize($batch);
+        $query = Elastica\Query::create($query->toArray())->setSize($batch);
+
         $scroll = $this->getType()->createSearch($query)->scroll($scrollExpiryTime);
         foreach ($scroll as $scrollId => $resultSet) {
             $totalTime += $resultSet->getTotalTime();
@@ -89,9 +96,11 @@ class DBAL implements DBALInterface
 
     /**
      * @param Elastica\Query $query
-     * @return DocumentInterface
+     *
      * @throws DocumentNotFoundException
      * @throws ElasticsearchQueryException
+     *
+     * @return DocumentInterface
      */
     public function findOne(Elastica\Query $query): DocumentInterface
     {
@@ -105,19 +114,19 @@ class DBAL implements DBALInterface
 
     /**
      * @param string ...$ids
+     *
      * @return SearchResultInterface
      */
     public function findByIds(string ...$ids): SearchResultInterface
     {
-        if (0 === \count($ids)) {
-            throw new \InvalidArgumentException('Please provide at least on id');
-        }
+        Assert::minCount($ids, 1, 'Please provide at least one id');
 
         return $this->searchAll(new Elastica\Query(new Elastica\Query\Ids($ids)));
     }
 
     /**
      * @param DocumentInterface ...$documents
+     *
      * @throws ElasticsearchQueryException
      */
     public function bulkUpdatePatch(DocumentInterface ...$documents): void
@@ -141,6 +150,7 @@ class DBAL implements DBALInterface
 
     /**
      * @param DocumentInterface $document
+     *
      * @throws ElasticsearchQueryException
      */
     public function updatePatch(DocumentInterface $document): void
@@ -149,16 +159,17 @@ class DBAL implements DBALInterface
     }
 
     /**
-     * @param Elastica\Query $query
+     * @param Elastica\Query         $query
      * @param Elastica\Script\Script $script
-     * @param string $scriptKey
+     * @param string                 $scriptKey
+     *
      * @throws ElasticsearchQueryException
      */
     public function updateByQuery(Elastica\Query $query, Elastica\Script\Script $script, string $scriptKey = 'source'): void
     {
         $scriptData = new Map($script->toArray()['script']);
 
-        if ($scriptKey !== 'source') {
+        if ('source' !== $scriptKey) {
             $scriptData = $scriptData->rename('source', $scriptKey);
         }
 
@@ -173,6 +184,7 @@ class DBAL implements DBALInterface
 
     /**
      * @param DocumentInterface $document
+     *
      * @throws ElasticsearchQueryException
      */
     public function add(DocumentInterface $document): void
@@ -182,6 +194,7 @@ class DBAL implements DBALInterface
 
     /**
      * @param DocumentInterface ...$documents
+     *
      * @throws ElasticsearchQueryException
      */
     public function bulkAdd(DocumentInterface ...$documents): void
@@ -189,7 +202,7 @@ class DBAL implements DBALInterface
         $response = $this->getType()->addDocuments(\array_map(
             function (DocumentInterface $document): Elastica\Document {
                 return new Elastica\Document(
-                    $document->hasId() ? $document->getId() : null,
+                    $document->hasId() ? $document->getId() : '',
                     $document->getData()->toArray()
                 );
             }, $documents
@@ -237,7 +250,7 @@ class DBAL implements DBALInterface
         return new DocumentCollection(...\array_map(
             function (Elastica\Result $result): DocumentInterface {
                 return new Document(
-                    (string) $result->getId(),
+                    $result->getId(),
                     new Map($result->getData())
                 );
             },
@@ -253,7 +266,7 @@ class DBAL implements DBALInterface
     protected function getType(): Elastica\Type
     {
         if (!$this->type instanceof Elastica\Type) {
-            throw new \RuntimeException('Type is not set');
+            throw new \RuntimeException(\sprintf('%s is not set', Elastica\Type::class));
         }
 
         return $this->type;

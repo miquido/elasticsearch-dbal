@@ -1,0 +1,9 @@
+[
+    "_bulk",
+    "POST",
+    "{\"update\":{\"_id\":\"id\",\"_index\":\"test_index\",\"_type\":\"test_type\"}}\n{\"doc\":{\"name\":\"John\",\"surname\":\"Smith\"}}\n",
+    {
+        "refresh": "wait_for"
+    },
+    "application\/x-ndjson"
+]

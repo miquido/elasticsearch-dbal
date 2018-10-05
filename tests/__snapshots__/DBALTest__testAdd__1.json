@@ -1,0 +1,9 @@
+{
+    "_id": "new_id",
+    "_type": "",
+    "_index": "",
+    "_source": {
+        "name": "John",
+        "surname": "Smith"
+    }
+}

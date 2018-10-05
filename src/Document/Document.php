@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Miquido\Elasticsearch\Document;
 
+use Miquido\DataStructure\Map\Map;
 use Miquido\DataStructure\Map\MapInterface;
 
 final class Document implements DocumentInterface
@@ -18,10 +19,10 @@ final class Document implements DocumentInterface
      */
     private $data;
 
-    public function __construct(?string $id, MapInterface $data)
+    public function __construct(string $id = null, MapInterface $data = null)
     {
         $this->id = $id;
-        $this->data = $data;
+        $this->data = $data ?? new Map();
     }
 
     public function getId(): string
@@ -30,7 +31,7 @@ final class Document implements DocumentInterface
             throw new \LogicException('Id is not set');
         }
 
-        return $this->id;
+        return (string) $this->id;
     }
 
     public function hasId(): bool

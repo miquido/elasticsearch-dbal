@@ -1,0 +1,6 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+    - vendor/phpstan/phpstan-mockery/extension.neon
+parameters:
+    ignoreErrors:
+        - /does not call parent constructor from Miquido\\Elasticsearch\\DBAL/

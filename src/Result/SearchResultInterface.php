@@ -9,6 +9,8 @@ use Miquido\Elasticsearch\Document\Collection\DocumentCollectionInterface;
 interface SearchResultInterface extends \Countable
 {
     public function getTime(): int;
+
     public function getTotalHits(): int;
+
     public function getDocuments(): DocumentCollectionInterface;
 }
