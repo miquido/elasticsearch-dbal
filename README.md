@@ -28,7 +28,7 @@ composer require miquido/elasticsearch-dbal
 - [Delete documents](#delete-documents)
 
 ### Initialize *DBAL* object
-*Miquido\Elasticsearch\DBAL* object requires *Elastica\Type*:
+*Miquido\Elasticsearch\DBAL* requires *Elastica\Type* object:
 ```php
 <?php
 
